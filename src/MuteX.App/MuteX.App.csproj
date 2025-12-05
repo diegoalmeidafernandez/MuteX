@@ -7,7 +7,7 @@
     <UseWPF>true</UseWPF>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
 
-    <ImplicitUsings>disable</ImplicitUsings> 
+    <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
@@ -22,6 +22,16 @@
     <Resource Include="UI/Icons/app.ico" />
     <Resource Include="UI/Icons/mic_on.ico" />
     <Resource Include="UI/Icons/mic_off.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="UI/Sounds/mute.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+
+    <Content Include="UI/Sounds/unmute.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

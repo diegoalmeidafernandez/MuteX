@@ -1,9 +1,12 @@
 ﻿using System;
+using System.IO;
+using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using MuteX.App.Core;
 using MuteX.App.UI;
+using NAudio.Wave;
 
 namespace MuteX.App
 {
@@ -15,8 +18,26 @@ namespace MuteX.App
         private StartupManager? _startupManager;
         private TrayIcon? _trayIcon;
 
+        // 🔒 --- Mutex para evitar abrir más de una instancia ---
+        private static Mutex? _appMutex;
+
+        // 🔊 --- Reproductor para sonidos ---
+        private WaveOutEvent? _soundPlayer;
+        private AudioFileReader? _audioReader;
+
         public MainWindow()
         {
+            // --- SINGLE INSTANCE CHECK ---
+            bool createdNew = false;
+            _appMutex = new Mutex(true, "MuteX_SingleInstance_Mutex", out createdNew);
+
+            if (!createdNew)
+            {
+                MessageBox.Show("MuteX ya está ejecutándose.", "MuteX", MessageBoxButton.OK, MessageBoxImage.Information);
+                Application.Current.Shutdown();
+                return;
+            }
+
             InitializeComponent();
             Loaded += MainWindow_Loaded;
         }
@@ -57,17 +78,15 @@ namespace MuteX.App
             _trayIcon.ShowStartupNotification();
         }
 
+        // ----------------- MICA -----------------
         private void ApplyMica()
         {
             try
             {
                 var hwnd = new WindowInteropHelper(this).Handle;
-
                 const int DWMWA_SYSTEMBACKDROP_TYPE = 38;
                 int micaValue = 3;
-
-                DwmSetWindowAttribute(hwnd, DWMWA_SYSTEMBACKDROP_TYPE,
-                    ref micaValue, sizeof(int));
+                DwmSetWindowAttribute(hwnd, DWMWA_SYSTEMBACKDROP_TYPE, ref micaValue, sizeof(int));
             }
             catch { }
         }
@@ -77,29 +96,24 @@ namespace MuteX.App
             try
             {
                 var hwnd = new WindowInteropHelper(this).Handle;
-
                 const int DWMWA_WINDOW_CORNER_PREFERENCE = 33;
                 int preference = 2;
-
-                DwmSetWindowAttribute(hwnd, DWMWA_WINDOW_CORNER_PREFERENCE,
-                    ref preference, sizeof(int));
+                DwmSetWindowAttribute(hwnd, DWMWA_WINDOW_CORNER_PREFERENCE, ref preference, sizeof(int));
             }
             catch { }
         }
 
         [System.Runtime.InteropServices.DllImport("dwmapi.dll")]
-        private static extern int DwmSetWindowAttribute(
-            IntPtr hwnd,
-            int attribute,
-            ref int value,
-            int size);
+        private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attribute, ref int value, int size);
 
+        // ----------------- DRAG WINDOW -----------------
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             base.OnMouseLeftButtonDown(e);
             DragMove();
         }
 
+        // ----------------- CLOSE TO TRAY -----------------
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             e.Cancel = true;
@@ -114,6 +128,7 @@ namespace MuteX.App
                 this.Hide();
         }
 
+        // ----------------- HOTKEY -----------------
         private void RegisterHotKey()
         {
             var s = _settingsManager!.Settings;
@@ -126,10 +141,35 @@ namespace MuteX.App
             TextHotKey.Text = KeyToString(s.HotKeyKey, s.HotKeyModifier);
         }
 
+        // ----------------- AUDIO + SONIDOS -----------------
         private void ToggleMute()
         {
             _audioController!.ToggleMute();
             UpdateMicStatus();
+
+            PlaySound(_audioController!.IsMuted()
+                ? "UI/Sounds/mute.mp3"
+                : "UI/Sounds/unmute.mp3");
+        }
+
+        private void PlaySound(string path)
+        {
+            try
+            {
+                string fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
+
+                _soundPlayer?.Dispose();
+                _audioReader?.Dispose();
+
+                _audioReader = new AudioFileReader(fullPath);
+                _soundPlayer = new WaveOutEvent();
+                _soundPlayer.Init(_audioReader);
+                _soundPlayer.Play();
+            }
+            catch (Exception ex)
+            {
+                File.WriteAllText("sound_error.log", ex.ToString());
+            }
         }
 
         private string KeyToString(uint key, uint mod)
@@ -147,6 +187,7 @@ namespace MuteX.App
         private void UpdateMicStatus()
         {
             bool muted = _audioController!.IsMuted();
+
             TextMicStatus.Text = muted ? "MUTED" : "ACTIVE";
             TextMicStatus.Foreground = muted
                 ? System.Windows.Media.Brushes.Red
@@ -155,10 +196,7 @@ namespace MuteX.App
             _trayIcon!.SetMuted(muted);
         }
 
-        private void ButtonToggleMute_Click(object sender, RoutedEventArgs e)
-        {
-            ToggleMute();
-        }
+        private void ButtonToggleMute_Click(object sender, RoutedEventArgs e) => ToggleMute();
 
         private void ButtonChangeHotKey_Click(object sender, RoutedEventArgs e)
         {
@@ -199,6 +237,10 @@ namespace MuteX.App
             base.OnClosed(e);
             _hotKeyManager?.Dispose();
             _trayIcon?.Dispose();
+
+            _soundPlayer?.Dispose();
+            _audioReader?.Dispose();
+            _appMutex?.Dispose();
         }
     }
 }
