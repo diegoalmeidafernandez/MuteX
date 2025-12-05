@@ -9,6 +9,9 @@
 
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
+
+    <!-- Icono del ejecutable -->
+    <ApplicationIcon>UI/Icons/app.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
