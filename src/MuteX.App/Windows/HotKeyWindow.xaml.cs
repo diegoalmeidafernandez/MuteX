@@ -1,19 +1,18 @@
 using System.Windows;
 using System.Windows.Input;
 using MuteX.App.Core;
-using System.Windows.Interop;
-
 
 namespace MuteX.App.Windows
 {
     public partial class HotKeyWindow : Window
     {
         private readonly SettingsManager _settings;
-        
+
         public HotKeyWindow(SettingsManager settings)
         {
             InitializeComponent();
             _settings = settings;
+            KeyDown += Window_KeyDown;
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)

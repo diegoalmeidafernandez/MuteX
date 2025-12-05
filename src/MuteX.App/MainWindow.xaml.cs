@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Interop;
 using MuteX.App.Core;
 using MuteX.App.UI;
@@ -22,6 +23,9 @@ namespace MuteX.App
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            // Aplicar Mica al cargar
+            ApplyMica();
+
             _audioController = new AudioController();
             _settingsManager = new SettingsManager();
             _startupManager = new StartupManager();
@@ -42,9 +46,40 @@ namespace MuteX.App
             CheckStartup_Checked(null, null);
         }
 
+        // --------- MICA EFFECT ---------
+        private void ApplyMica()
+        {
+            try
+            {
+                var hwnd = new WindowInteropHelper(this).Handle;
+
+                const int DWMWA_SYSTEMBACKDROP_TYPE = 38;
+                int micaValue = 2; // Mica
+
+                DwmSetWindowAttribute(hwnd, DWMWA_SYSTEMBACKDROP_TYPE,
+                    ref micaValue, sizeof(int));
+            }
+            catch { /* Si falla, ignora */ }
+        }
+
+        [System.Runtime.InteropServices.DllImport("dwmapi.dll")]
+        private static extern int DwmSetWindowAttribute(
+            IntPtr hwnd,
+            int attribute,
+            ref int value,
+            int size);
+
+        // --------- DRAG WINDOW ---------
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonDown(e);
+            DragMove();
+        }
+
         private void RegisterHotKey()
         {
             var s = _settingsManager!.Settings;
+
             _hotKeyManager!.UnregisterHotKey();
             _hotKeyManager.HotKeyPressed -= ToggleMute;
             _hotKeyManager.HotKeyPressed += ToggleMute;
@@ -61,7 +96,7 @@ namespace MuteX.App
 
         private string KeyToString(uint key, uint mod)
         {
-            string k = ((System.Windows.Input.Key)key).ToString();
+            string k = ((Key)key).ToString();
             string prefix = "";
 
             if (mod == 1) prefix = "Alt+";
@@ -100,7 +135,6 @@ namespace MuteX.App
                 _hotKeyManager.RegisterHotKey(s.HotKeyModifier, s.HotKeyKey);
             }
         }
-        
 
         private void CheckStartup_Checked(object? sender, RoutedEventArgs? e)
         {

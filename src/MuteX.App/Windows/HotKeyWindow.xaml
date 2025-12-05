@@ -2,29 +2,59 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Select Hotkey"
-        Height="180" Width="350"
-        WindowStartupLocation="CenterOwner"
+        Width="360"
+        Height="220"
         ResizeMode="NoResize"
-        KeyDown="Window_KeyDown">
+        WindowStartupLocation="CenterOwner"
+        FontFamily="Segoe UI Variable"
+        Background="#FAFAFC">
 
     <Grid Margin="20">
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Text="Press any key to set as new hotkey:"
-                       FontSize="16"
-                       Margin="0 0 0 15"
-                       HorizontalAlignment="Center"/>
 
-            <Border BorderBrush="Gray" BorderThickness="1" Padding="10">
-                <TextBlock x:Name="TextKeyPreview"
-                           Text="Waiting..."
-                           FontSize="18"/>
-            </Border>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Title -->
+        <TextBlock Text="Press any key to set as new hotkey:"
+                   FontSize="16"
+                   FontWeight="Bold"
+                   Margin="0,0,0,15"
+                   HorizontalAlignment="Center"/>
+
+        <!-- Preview Text -->
+        <Border Background="#FFFFFF"
+                CornerRadius="8"
+                BorderBrush="#D0D0D0"
+                BorderThickness="1"
+                Padding="12"
+                Grid.Row="1">
+
+            <TextBlock x:Name="TextKeyPreview"
+                       Text="Waiting..."
+                       FontSize="20"
+                       FontWeight="SemiBold"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Foreground="#444"/>
+        </Border>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="2"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="0,20,0,0">
 
             <Button Content="Cancel"
-                    Margin="0 20 0 0"
-                    Width="90"
-                    HorizontalAlignment="Center"
+                    Width="80"
+                    Height="36"
+                    Background="#E5E5EA"
+                    BorderBrush="#C8C8CC"
                     Click="Cancel_Click"/>
+
         </StackPanel>
+
     </Grid>
 </Window>
