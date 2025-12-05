@@ -38,11 +38,10 @@ namespace MuteX.App
                 ref micaValue,
                 sizeof(int));
 
-            // Esto activa sombras modernas
             int trueValue = 1;
             DwmSetWindowAttribute(
                 windowHandle,
-                1029,   // DWMWA_USE_IMMERSIVE_DARK_MODE equiv. Win11
+                1029,
                 ref trueValue,
                 sizeof(int));
         }

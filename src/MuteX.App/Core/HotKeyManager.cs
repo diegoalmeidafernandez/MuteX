@@ -48,7 +48,6 @@ namespace MuteX.App.Core
             _source.RemoveHook(HwndHook);
         }
 
-        // WinAPI
         [DllImport("user32.dll")]
         private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
 

@@ -16,7 +16,6 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Title -->
         <TextBlock Text="Press any key to set as new hotkey:"
                    FontSize="16"
                    FontWeight="Bold"
@@ -24,7 +23,6 @@
                    HorizontalAlignment="Center"
                    Foreground="{StaticResource TextColorPrimary}"/>
 
-        <!-- Preview Text -->
         <Border Background="{StaticResource PanelBackground}"
                 CornerRadius="8"
                 BorderBrush="#3D3D3F"
@@ -42,7 +40,6 @@
                        Foreground="{StaticResource TextColorSecondary}"/>
         </Border>
 
-        <!-- Buttons -->
         <StackPanel Grid.Row="2"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right"

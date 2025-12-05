@@ -23,8 +23,8 @@ namespace MuteX.App
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            // Aplicar Mica al cargar
             ApplyMica();
+            ApplyWindowCorners();
 
             _audioController = new AudioController();
             _settingsManager = new SettingsManager();
@@ -46,7 +46,6 @@ namespace MuteX.App
             CheckStartup_Checked(null, null);
         }
 
-        // --------- MICA EFFECT ---------
         private void ApplyMica()
         {
             try
@@ -54,12 +53,31 @@ namespace MuteX.App
                 var hwnd = new WindowInteropHelper(this).Handle;
 
                 const int DWMWA_SYSTEMBACKDROP_TYPE = 38;
-                int micaValue = 3; // Mica
+                int micaValue = 3;
 
                 DwmSetWindowAttribute(hwnd, DWMWA_SYSTEMBACKDROP_TYPE,
                     ref micaValue, sizeof(int));
             }
-            catch { /* Si falla, ignora */ }
+            catch
+            {
+            }
+        }
+
+        private void ApplyWindowCorners()
+        {
+            try
+            {
+                var hwnd = new WindowInteropHelper(this).Handle;
+
+                const int DWMWA_WINDOW_CORNER_PREFERENCE = 33;
+                int preference = 2;
+
+                DwmSetWindowAttribute(hwnd, DWMWA_WINDOW_CORNER_PREFERENCE,
+                    ref preference, sizeof(int));
+            }
+            catch
+            {
+            }
         }
 
         [System.Runtime.InteropServices.DllImport("dwmapi.dll")]
@@ -69,7 +87,6 @@ namespace MuteX.App
             ref int value,
             int size);
 
-        // --------- DRAG WINDOW ---------
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             base.OnMouseLeftButtonDown(e);
@@ -110,9 +127,10 @@ namespace MuteX.App
         {
             bool muted = _audioController!.IsMuted();
             TextMicStatus.Text = muted ? "MUTED" : "ACTIVE";
-            TextMicStatus.Foreground = muted ?
-                System.Windows.Media.Brushes.Red :
-                System.Windows.Media.Brushes.LimeGreen;
+            TextMicStatus.Foreground = muted
+                ? System.Windows.Media.Brushes.Red
+                : System.Windows.Media.Brushes.LimeGreen;
+
             _trayIcon!.SetMuted(muted);
         }
 

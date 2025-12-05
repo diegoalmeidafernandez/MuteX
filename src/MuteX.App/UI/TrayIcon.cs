@@ -10,7 +10,6 @@ namespace MuteX.App.UI
         private readonly Icon _iconOn;
         private readonly Icon _iconOff;
 
-        // Eventos que MainWindow necesita
         public event Action? ToggleRequested;
         public event Action? OpenWindowRequested;
         public event Action? ExitRequested;
@@ -25,14 +24,12 @@ namespace MuteX.App.UI
 
             _notifyIcon.Icon = _iconOff;
 
-            // Crear menú contextual
             var menu = new ContextMenuStrip();
             menu.Items.Add("Toggle Mute", null, (s, e) => ToggleRequested?.Invoke());
             menu.Items.Add("Open Window", null, (s, e) => OpenWindowRequested?.Invoke());
             menu.Items.Add("Exit", null, (s, e) => ExitRequested?.Invoke());
             _notifyIcon.ContextMenuStrip = menu;
 
-            // Click izquierdo → toggle
             _notifyIcon.MouseClick += (s, e) =>
             {
                 if (e.Button == MouseButtons.Left)

@@ -7,18 +7,17 @@
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         FontFamily="Segoe UI Variable"
-        Background="Transparent"
+        Background="#00FFFFFF"
         WindowStyle="None"
         AllowsTransparency="False"
         Icon="UI/Icons/app.ico">
 
-    <!-- Fondo con bordes redondeados -->
     <Border x:Name="WindowBorder"
             Background="{StaticResource AppBackground}"
             CornerRadius="12"
             BorderBrush="{StaticResource ButtonBorder}"
             BorderThickness="1"
-            Margin="1">
+            Margin="0">
 
         <Grid Margin="25">
 
@@ -30,7 +29,6 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- MICROPHONE STATUS -->
             <TextBlock Text="Microphone Status:"
                        FontWeight="Bold"
                        FontSize="18"
@@ -45,21 +43,21 @@
                        HorizontalAlignment="Center"
                        Foreground="{StaticResource TextColorPrimary}"/>
 
-            <!-- HOTKEY -->
             <StackPanel Grid.Row="2"
                         Orientation="Horizontal"
                         Margin="0,0,0,10">
+
                 <TextBlock Text="Current Hotkey:"
                            FontWeight="Bold"
                            FontSize="15"
                            Foreground="{StaticResource TextColorSecondary}"/>
+
                 <TextBlock x:Name="TextHotKey"
                            Margin="10,0,0,0"
                            FontSize="15"
                            Foreground="{StaticResource TextColorPrimary}"/>
             </StackPanel>
 
-            <!-- BUTTONS -->
             <StackPanel Grid.Row="3"
                         Orientation="Vertical"
                         Margin="0,20,0,0">
@@ -84,7 +82,6 @@
                           Unchecked="CheckStartup_Unchecked"/>
             </StackPanel>
 
-            <!-- EXIT -->
             <Button x:Name="ButtonExit"
                     Grid.Row="4"
                     Content="Exit"
@@ -93,7 +90,7 @@
                     Height="32"
                     Margin="0,25,0,0"
                     Click="ButtonExit_Click"/>
-        </Grid>
 
+        </Grid>
     </Border>
 </Window>
