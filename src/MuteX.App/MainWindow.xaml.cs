@@ -54,7 +54,7 @@ namespace MuteX.App
                 var hwnd = new WindowInteropHelper(this).Handle;
 
                 const int DWMWA_SYSTEMBACKDROP_TYPE = 38;
-                int micaValue = 2; // Mica
+                int micaValue = 3; // Mica
 
                 DwmSetWindowAttribute(hwnd, DWMWA_SYSTEMBACKDROP_TYPE,
                     ref micaValue, sizeof(int));

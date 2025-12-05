@@ -3,17 +3,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Select Hotkey"
         Width="360"
-        Height="220"
+        Height="180"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner"
-        FontFamily="Segoe UI Variable"
-        Background="#FAFAFC">
+        Background="{StaticResource AppBackground}">
 
     <Grid Margin="20">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
@@ -22,23 +21,25 @@
                    FontSize="16"
                    FontWeight="Bold"
                    Margin="0,0,0,15"
-                   HorizontalAlignment="Center"/>
+                   HorizontalAlignment="Center"
+                   Foreground="{StaticResource TextColorPrimary}"/>
 
         <!-- Preview Text -->
-        <Border Background="#FFFFFF"
+        <Border Background="{StaticResource PanelBackground}"
                 CornerRadius="8"
-                BorderBrush="#D0D0D0"
+                BorderBrush="#3D3D3F"
                 BorderThickness="1"
-                Padding="12"
-                Grid.Row="1">
+                Padding="8"
+                Grid.Row="1"
+                Height="40">
 
             <TextBlock x:Name="TextKeyPreview"
                        Text="Waiting..."
-                       FontSize="20"
+                       FontSize="18"
                        FontWeight="SemiBold"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
-                       Foreground="#444"/>
+                       Foreground="{StaticResource TextColorSecondary}"/>
         </Border>
 
         <!-- Buttons -->
@@ -50,10 +51,7 @@
             <Button Content="Cancel"
                     Width="80"
                     Height="36"
-                    Background="#E5E5EA"
-                    BorderBrush="#C8C8CC"
                     Click="Cancel_Click"/>
-
         </StackPanel>
 
     </Grid>

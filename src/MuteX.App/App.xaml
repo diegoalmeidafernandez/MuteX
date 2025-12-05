@@ -5,14 +5,15 @@
 
     <Application.Resources>
 
-        <!-- ===== PALETA ESTILO WINDOWS 11 ===== -->
-        <SolidColorBrush x:Key="AppBackground" Color="#FAFAFC" />
-        <SolidColorBrush x:Key="ButtonBackground" Color="#E5E5EA" />
-        <SolidColorBrush x:Key="ButtonBorder" Color="#C8C8CC" />
-        <SolidColorBrush x:Key="TextColorPrimary" Color="#222" />
-        <SolidColorBrush x:Key="TextColorSecondary" Color="#444" />
+        <!-- PALETA MODO OSCURO -->
+        <SolidColorBrush x:Key="AppBackground" Color="#1E1E1F" />
+        <SolidColorBrush x:Key="PanelBackground" Color="#2A2A2B" />
+        <SolidColorBrush x:Key="ButtonBackground" Color="#323233" />
+        <SolidColorBrush x:Key="ButtonBorder" Color="#4A4A4C" />
+        <SolidColorBrush x:Key="TextColorPrimary" Color="#F5F5F5" />
+        <SolidColorBrush x:Key="TextColorSecondary" Color="#C7C7C7" />
 
-        <!-- ===== ESTILO GLOBAL DE BOTONES ===== -->
+        <!-- BOTONES -->
         <Style TargetType="Button">
             <Setter Property="FontFamily" Value="Segoe UI Variable" />
             <Setter Property="FontSize" Value="15" />
@@ -20,19 +21,18 @@
             <Setter Property="Background" Value="{StaticResource ButtonBackground}" />
             <Setter Property="BorderBrush" Value="{StaticResource ButtonBorder}" />
             <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="Padding" Value="10" />
-            <Setter Property="Margin" Value="0,5" />
             <Setter Property="Height" Value="40" />
+            <Setter Property="Padding" Value="10" />
             <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Margin" Value="0,5" />
 
-            <!-- Botones redondeados -->
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border CornerRadius="8"
-                                Background="{TemplateBinding Background}"
+                        <Border Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}">
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8">
                             <ContentPresenter HorizontalAlignment="Center"
                                               VerticalAlignment="Center"/>
                         </Border>
@@ -41,13 +41,13 @@
             </Setter>
         </Style>
 
-        <!-- ===== TEXTBLOCK GLOBAL ===== -->
+        <!-- TEXTO -->
         <Style TargetType="TextBlock">
             <Setter Property="FontFamily" Value="Segoe UI Variable" />
             <Setter Property="Foreground" Value="{StaticResource TextColorPrimary}" />
         </Style>
 
-        <!-- ===== CHECKBOX GLOBAL ===== -->
+        <!-- CHECKBOX -->
         <Style TargetType="CheckBox">
             <Setter Property="FontFamily" Value="Segoe UI Variable" />
             <Setter Property="Foreground" Value="{StaticResource TextColorPrimary}" />
@@ -55,7 +55,7 @@
             <Setter Property="Margin" Value="0,6,0,0" />
         </Style>
 
-        <!-- ===== ESTILO DE TODAS LAS VENTANAS ===== -->
+        <!-- VENTANAS -->
         <Style TargetType="Window">
             <Setter Property="FontFamily" Value="Segoe UI Variable" />
             <Setter Property="Background" Value="{StaticResource AppBackground}" />
