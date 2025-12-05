@@ -40,8 +40,6 @@ Installers are located in:
 
 ### **Requirements**
 - Windows 10 or Windows 11  
-- .NET 8 SDK  
-- Visual Studio 2022 / VS Code / Rider  
 
 ### **Build**
 ```bash
