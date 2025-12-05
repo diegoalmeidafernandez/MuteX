@@ -36,14 +36,25 @@ namespace MuteX.App
             RegisterHotKey();
 
             _trayIcon = new TrayIcon();
+
             _trayIcon.ToggleRequested += ToggleMute;
-            _trayIcon.OpenWindowRequested += () => Show();
+
+            _trayIcon.OpenWindowRequested += () =>
+            {
+                this.Show();
+                this.WindowState = WindowState.Normal;
+                this.Activate();
+            };
+
             _trayIcon.ExitRequested += () => Application.Current.Shutdown();
 
             UpdateMicStatus();
 
             CheckStartup.IsChecked = _settingsManager.Settings.StartWithWindows;
             CheckStartup_Checked(null, null);
+
+            this.Hide();
+            _trayIcon.ShowStartupNotification();
         }
 
         private void ApplyMica()
@@ -58,9 +69,7 @@ namespace MuteX.App
                 DwmSetWindowAttribute(hwnd, DWMWA_SYSTEMBACKDROP_TYPE,
                     ref micaValue, sizeof(int));
             }
-            catch
-            {
-            }
+            catch { }
         }
 
         private void ApplyWindowCorners()
@@ -75,9 +84,7 @@ namespace MuteX.App
                 DwmSetWindowAttribute(hwnd, DWMWA_WINDOW_CORNER_PREFERENCE,
                     ref preference, sizeof(int));
             }
-            catch
-            {
-            }
+            catch { }
         }
 
         [System.Runtime.InteropServices.DllImport("dwmapi.dll")]
@@ -91,6 +98,20 @@ namespace MuteX.App
         {
             base.OnMouseLeftButtonDown(e);
             DragMove();
+        }
+
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = true;
+            this.Hide();
+        }
+
+        protected override void OnStateChanged(EventArgs e)
+        {
+            base.OnStateChanged(e);
+
+            if (WindowState == WindowState.Minimized)
+                this.Hide();
         }
 
         private void RegisterHotKey()

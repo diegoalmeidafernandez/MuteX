@@ -65,5 +65,13 @@ namespace MuteX.App.UI
             _notifyIcon.Visible = false;
             _notifyIcon.Dispose();
         }
+
+        public void ShowStartupNotification()
+        {
+            _notifyIcon.BalloonTipTitle = "MuteX";
+            _notifyIcon.BalloonTipText = "MuteX is running in the background";
+            _notifyIcon.BalloonTipIcon = ToolTipIcon.Info;
+            _notifyIcon.ShowBalloonTip(3000);
+        }
     }
 }
