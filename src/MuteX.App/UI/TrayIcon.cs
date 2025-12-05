@@ -8,7 +8,7 @@ namespace MuteX.App.UI
     {
         private readonly NotifyIcon _notifyIcon;
         private Icon _iconOn;
-        private TrayIcon _iconOff;
+        private Icon _iconOff;
 
         public event Action? ToggleRequested;
         public event Action? OpenWindowRequested;
@@ -25,7 +25,8 @@ namespace MuteX.App.UI
                 Icon = _iconOn,
                 Text = "MuteX - Microphone Controller"
             };
-            CreateContextMenu;
+
+            CreateContextMenu();
         }
 
         private void CreateContextMenu()
@@ -43,10 +44,10 @@ namespace MuteX.App.UI
 
             menu.Items.Add(toggle);
             menu.Items.Add(open);
-            menu.Items.Add(new ToolStripSeparator());       
+            menu.Items.Add(new ToolStripSeparator());
             menu.Items.Add(exit);
 
-            _notifyIcon.ContextMenuStrip = menu;     
+            _notifyIcon.ContextMenuStrip = menu;
         }
 
         public void SetMuted(bool muted)

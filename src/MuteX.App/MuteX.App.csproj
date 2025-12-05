@@ -1,9 +1,28 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
     <UseWPF>true</UseWPF>
+
+    <!-- Compilar proyectos Windows en Linux -->
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+
+    <!-- Icono ejecutable -->
+    <ApplicationIcon>UI/Icons/app.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <!-- Iconos: usar None, NO Resource -->
+  <ItemGroup>
+    <None Include="UI/Icons/app.ico" />
+    <None Include="UI/Icons/mic_on.ico" />
+    <None Include="UI/Icons/mic_off.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NAudio" Version="2.2.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Include="System.Drawing.Common" Version="10.0.0" />
+  </ItemGroup>
 
 </Project>
