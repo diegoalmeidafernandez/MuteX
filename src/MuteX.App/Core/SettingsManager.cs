@@ -18,13 +18,13 @@ namespace MuteX.App.Core
 
         public SettingsManager()
         {
-            var appData = Enviroment.GetFolderPath(Enviroment.SpecialFolder.ApplicationData);
+            var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             var folder = Path.Combine(appData, "MuteX");
 
             if (!Directory.Exists(folder))
                 Directory.CreateDirectory(folder);
             
-            _configPath = _configPath.Combine(folder, "settings.json");
+            _configPath = Path.Combine(folder, "settings.json");
             Load();
         }
 
