@@ -1,22 +1,22 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
     <UseWPF>true</UseWPF>
 
-    <!-- Compilar proyectos Windows en Linux -->
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
 
-    <!-- Icono ejecutable -->
+    <!-- Que WPF genere los .g.cs automáticamente -->
+    <EnableDefaultPageItems>true</EnableDefaultPageItems>
+
     <ApplicationIcon>UI/Icons/app.ico</ApplicationIcon>
   </PropertyGroup>
 
-  <!-- Iconos: usar None, NO Resource -->
   <ItemGroup>
-    <None Include="UI/Icons/app.ico" />
-    <None Include="UI/Icons/mic_on.ico" />
-    <None Include="UI/Icons/mic_off.ico" />
+    <Resource Include="UI/Icons/app.ico" />
+    <Resource Include="UI/Icons/mic_on.ico" />
+    <Resource Include="UI/Icons/mic_off.ico" />
   </ItemGroup>
 
   <ItemGroup>
