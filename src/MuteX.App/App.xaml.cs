@@ -1,17 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows;
+using Application = System.Windows.Application;
 
 namespace MuteX.App
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            // Log de excepciones
+            AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+            {
+                File.WriteAllText("crash.log", e.ExceptionObject.ToString());
+            };
+
+            DispatcherUnhandledException += (s, e) =>
+            {
+                File.WriteAllText("crash.log", e.Exception.ToString());
+                e.Handled = true;
+            };
+        }
     }
 }

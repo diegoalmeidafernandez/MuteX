@@ -7,47 +7,55 @@ namespace MuteX.App.UI
     public class TrayIcon : IDisposable
     {
         private readonly NotifyIcon _notifyIcon;
-        private Icon _iconOn;
-        private Icon _iconOff;
+        private readonly Icon _iconOn;
+        private readonly Icon _iconOff;
 
+        // Eventos que MainWindow necesita
         public event Action? ToggleRequested;
         public event Action? OpenWindowRequested;
         public event Action? ExitRequested;
 
         public TrayIcon()
         {
-            _iconOn = new Icon("UI/Icons/mic_on.ico");
-            _iconOff = new Icon("UI/Icons/mic_off.ico");
+            _notifyIcon = new NotifyIcon();
+            _notifyIcon.Visible = true;
 
-            _notifyIcon = new NotifyIcon
+            _iconOn = LoadIcon("UI/Icons/mic_on.ico");
+            _iconOff = LoadIcon("UI/Icons/mic_off.ico");
+
+            _notifyIcon.Icon = _iconOff;
+
+            // Crear menú contextual
+            var menu = new ContextMenuStrip();
+            menu.Items.Add("Toggle Mute", null, (s, e) => ToggleRequested?.Invoke());
+            menu.Items.Add("Open Window", null, (s, e) => OpenWindowRequested?.Invoke());
+            menu.Items.Add("Exit", null, (s, e) => ExitRequested?.Invoke());
+            _notifyIcon.ContextMenuStrip = menu;
+
+            // Click izquierdo → toggle
+            _notifyIcon.MouseClick += (s, e) =>
             {
-                Visible = true,
-                Icon = _iconOn,
-                Text = "MuteX - Microphone Controller"
+                if (e.Button == MouseButtons.Left)
+                    ToggleRequested?.Invoke();
             };
-
-            CreateContextMenu();
         }
 
-        private void CreateContextMenu()
+        private Icon LoadIcon(string relativePath)
         {
-            var menu = new ContextMenuStrip();
+            try
+            {
+                var uri = new Uri($"pack://application:,,,/{relativePath}");
+                var stream = System.Windows.Application.GetResourceStream(uri)?.Stream;
 
-            var toggle = new ToolStripMenuItem("Mute / Unmute");
-            toggle.Click += (s, e) => ToggleRequested?.Invoke();
+                if (stream == null)
+                    throw new Exception($"No se pudo cargar: {relativePath}");
 
-            var open = new ToolStripMenuItem("Open MuteX");
-            open.Click += (s, e) => OpenWindowRequested?.Invoke();
-
-            var exit = new ToolStripMenuItem("Exit");
-            exit.Click += (s, e) => ExitRequested?.Invoke();
-
-            menu.Items.Add(toggle);
-            menu.Items.Add(open);
-            menu.Items.Add(new ToolStripSeparator());
-            menu.Items.Add(exit);
-
-            _notifyIcon.ContextMenuStrip = menu;
+                return new Icon(stream);
+            }
+            catch
+            {
+                return SystemIcons.Warning;
+            }
         }
 
         public void SetMuted(bool muted)
@@ -59,8 +67,6 @@ namespace MuteX.App.UI
         {
             _notifyIcon.Visible = false;
             _notifyIcon.Dispose();
-            _iconOn.Dispose();
-            _iconOff.Dispose();
         }
     }
 }

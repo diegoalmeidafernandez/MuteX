@@ -3,26 +3,25 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
-    <UseWPF>true</UseWPF>
 
+    <UseWPF>true</UseWPF>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
 
-    <!-- Que WPF genere los .g.cs automáticamente -->
-    <EnableDefaultPageItems>true</EnableDefaultPageItems>
-
-    <ApplicationIcon>UI/Icons/app.ico</ApplicationIcon>
+    <ImplicitUsings>disable</ImplicitUsings> 
+    <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NAudio" Version="2.2.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Include="System.Drawing.Common" Version="8.0.0" />
+    <PackageReference Include="System.Windows.Extensions" Version="8.0.0" />
+  </ItemGroup>
 
   <ItemGroup>
     <Resource Include="UI/Icons/app.ico" />
     <Resource Include="UI/Icons/mic_on.ico" />
     <Resource Include="UI/Icons/mic_off.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="NAudio" Version="2.2.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-    <PackageReference Include="System.Drawing.Common" Version="10.0.0" />
   </ItemGroup>
 
 </Project>
